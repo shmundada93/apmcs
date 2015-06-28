@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Transaction Entry</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+            
+<style type="text/css">
+    .container{
+    	margin-top: 20px;
+    }
+	
+	#vertical-divider {
+		border-right: 1px solid black;
+		}
+	
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap-datepicker3.min.css')}}">
+<script src="{{url_for('static', filename='js/bootstrap-datepicker.min.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/selectize.bootstrap3.css')}}">
+<script src="{{url_for('static', filename='js/selectize.min.js')}}"></script>
+<script type="text/javascript">
+
+            $(document).ready(function () {
+                
+                $('#date-picker').datepicker({
+                    format: "dd MM yyyy",
+					autoclose: true,
+					todayHighlight: true
+                });  
+				$('#date-picker').datepicker('update', new Date());
+				});
+</script>
+
+<div class="container">
+<div class="page-header">
+    <h1>
+      Farmer Details
+    </h1>
+ </div>
+  <div class="row">
+        <div class="col-md-6">
+			<form class="form-horizontal" method="POST" action="/" autocomplete="off">
+				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
+				
+				
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="name">Name</label>
+				<div class="col-md-10"><input class="form-control" id="name" name="name" type="text" value="{{farmer.name}}" required disabled></div>
+				</div>
+
+
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="phone">Phone</label>
+				<div class="col-md-10"><input class="form-control" id="phone" name="phone" pattern="^[0-9]{10}$" type="text" placeholder="10 digit mobile number" value="{{farmer.phone}}" required disabled></div>
+				</div>
+
+
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="village">Village</label>
+				<div class="col-md-10"><input class="form-control" id="village" name="village" type="text" value="{{farmer.village}}" required disabled></div>
+				</div>
+				
+				
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="area">Area</label>
+				<div class="col-md-10"><div class="input-group">
+				<input class="form-control" id="area" name="area" type="text" value="{{farmer.area}}" required disabled>
+				<span class="input-group-addon">Acres</span>
+				</div>
+				</div>
+				</div>
+
+				<div class="text-right">
+				<button type="submit" class="btn btn-default btn-loading"     data-loading-text="<span class='fa fa-spin fa-spinner'></span> Please wait..">		
+				Edit Details
+				</button>
+				</div>
+			  
+			</form>
+		</div>
+        <div class="col-md-6">
+			<div class="table-responsive ">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr class="text-nowrap">
+						<th class="col-xs-1">Crop</th>
+						<th class="col-xs-1">2014<small class="text-muted"> (quintals)</small></th>
+						<th class="col-xs-1">2015<small class="text-muted"> (quintals)</small></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Soyabean</td>
+							<td>25</td>
+							<td>15</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+   </div>
+
+  </div>
+<div class="container">
+	<div class="page-header">
+		<h2>
+		Transaction
+		</h2>
+	</div>
+	<div class="row">
+        <div class="col-md-6 vertical-divider" >
+			<form class="form-horizontal" method="POST" action="/" autocomplete="off">
+				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
+				
+
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="date">Date</label>
+				<div class="col-md-10">
+				<div class="input-group date" id="date-picker">
+				<input autofocus class="form-control" name="date" type="text" value="" required>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				</div>
+				</div>
+				</div>
+				
+
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="crop">Crop</label>
+				<div class="col-md-10">
+				<select class="select-crop" id="crop" name="crop" placeholder="Select Crop..." required>
+				</select>
+				</div>
+				<script>
+					$("#crop").selectize({
+						options: [
+							{crop: 'Wheat'},
+							{crop: 'Rice'},
+							{crop: 'Soyabean'},
+							
+						],
+						labelField: 'crop',
+						valueField: 'crop',
+						searchField: ['crop'],
+						openOnFocus: true
+					});
+				</script>
+				</div>
+				
+				
+
+
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="weight">Weight</label>
+				<div class="col-md-10"><div class="input-group">
+				<input class="form-control" id="weight" name="weight" type="text" value="" oninput="calculate()" required>
+				<span class="input-group-addon">Quintals</span>
+				</div>
+				</div>
+				</div>
+				
+				
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="price">Price</label>
+				<div class="col-md-10"><div class="input-group">
+				<input class="form-control" id="price" name="price" type="text" value="" oninput="calculate()" required>
+				<span class="input-group-addon">Rs.</span>
+				</div>
+				</div>
+				</div>
+				
+				
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="select-trader">Trader</label>
+				<div class="col-md-10">
+				<div>
+				<div class="control-group" id="select-trader-group">
+					
+					<select class="form-control" name="trader" id="select-trader" type="text" placeholder="Select Trader...">
+					</select>
+				</div>
+				<script>
+					$("#select-trader").selectize({
+						options: [
+							{name: 'Shrirang Mundada'},
+							{name: 'Ashoka Trade and Industries'},
+						],
+						labelField: 'name',
+						valueField: 'name',
+						searchField: ['name'],
+						openOnFocus: true
+					});
+				</script>
+				</div>
+				</div>
+				</div>
+				
+				
+				<div class="col-md-2"></div>
+				<div class="col-md-10">
+					<button type="submit" class="btn btn-lg btn-primary btn-block btn-loading"     data-loading-text="<span class='fa fa-spin fa-spinner'></span> Please wait..">		
+					Generate Receipt
+					</button>
+				</div>
+			</form>
+		</div>
+		<script>
+		function calculate() {
+		var weight = document.getElementById('weight').value;	
+		var price = document.getElementById('price').value;
+		var receiptTable = document.getElementById('receiptTable');
+		var value = weight*price;
+		var commission = value * 0.01;
+		var labour = weight * 7;
+		var total = value-commission-labour;
+		receiptTable.rows[1].cells[1].innerHTML = value.toFixed(2);
+		receiptTable.rows[2].cells[1].innerHTML = commission.toFixed(2);
+		receiptTable.rows[3].cells[1].innerHTML = labour.toFixed(2);
+		receiptTable.rows[4].cells[1].innerHTML = total.toFixed(2);
+		
+	}
+	</script>
+        <div class="col-md-6">
+			<div class="table-responsive ">
+				<table id="receiptTable" class="table">
+					<caption>Transaction Details</caption>
+					<thead>
+						<th>Description</th>
+						<th>Amount (Rs.)</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Product Value</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Commission (@ 1%)</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>labour Charges (Rs. 7 per Qtl)</td>
+							<td></td>
+						</tr>
+						<tr class="active">
+							<td>Total</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+   </div>
+</div>
+</body>
+</html>                                		
