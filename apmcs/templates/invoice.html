@@ -1,18 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Receipt</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <style>
-      @import url(http://fonts.googleapis.com/css?family=Bree+Serif);
-      body, h1, h2, h3, h4, h5, h6{
-      font-family: 'Bree Serif', serif;
-      }
-    </style>
-  </head>
-  
-  <body>
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block body %}
     <div class="container">
 	  <div id="printableArea">
       <div class="row">
@@ -28,8 +16,8 @@
         </div>
         <div class="col-xs-6 text-right">
           <h1>Receipt</h1>
-          <h1><small>Receipt No #001</small></h1>
-		  <h2><small>Date </small></h2>
+          <h1><small>Receipt No #{{transaction.id}}</small></h1>
+		  <h2><small>{{date}}</small></h2>
         </div>
       </div>
       <div class="row">
@@ -38,12 +26,12 @@
         <div class="col-xs-5 col-xs-offset-2 text-right">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4>For : XYZ Farmer</h4>
+              <h4>For : {{transaction.farmer.name}}</h4>
             </div>
             <div class="panel-body">
               <p>
-                Village <br>
-				Phone <br>
+                Village : {{transaction.farmer.village}}<br>
+				Phone : {{transaction.farmer.phone}}<br>
               </p>
             </div>
           </div>
@@ -69,10 +57,10 @@
         </thead>
         <tbody>
           <tr>
-            <td>Soyabean</td>
-            <td class="text-right">12</td>
-            <td class="text-right">3000</td>
-            <td class="text-right">36000</td>
+            <td>{{transaction.commodity.name}}</td>
+            <td class="text-right">{{transaction.weight}}</td>
+            <td class="text-right">{{transaction.price}}</td>
+            <td class="text-right">{{subtotal}}</td>
           </tr>
         </tbody>
       </table>
@@ -89,10 +77,10 @@
         </div>
         <div class="col-xs-2">
           <strong>
-          Rs. 36000.00 <br>
-          Rs. 360.00 <br>
-          Rs. 84.00 <br>
-		  Rs. 35556.00<br>
+          Rs. {{subtotal}} <br>
+          Rs. {{transaction.commission}} <br>
+          Rs. {{transaction.labour}} <br>
+		  Rs. {{transaction.total}}<br>
           </strong>
         </div>
       </div>
@@ -103,9 +91,9 @@
               <h4>Trader details</h4>
             </div>
             <div class="panel-body">
-              <p>Trader Name</p>
-              <p>Address</p>
-              <p>Contact</p>
+              <p>Trader Name : {{transaction.trader.name}}</p>
+              <p>Address : -- </p>
+              <p>Contact : {{transaction.trader.phone}}</p>
               <p>Other Info : --------</p>
             </div>
           </div>
@@ -144,13 +132,11 @@
 	</script>
 	  <div class="row">
 		<div class="col-md-6 text-right">
-			<a href="#" class="btn btn-lg btn-primary">New Transaction <span class="glyphicon glyphicon-file"></span></a>
+			<a href="/u/search" class="btn btn-lg btn-primary">New Transaction <span class="glyphicon glyphicon-file"></span></a>
 		</div>
 		<div class="col-md-6">
 			<a href="#" class="btn btn-lg btn-primary" onclick="printDiv('printableArea')">Print Receipt <span class="glyphicon glyphicon-print"></span></a>
 		</div>
 		</div>
     </div>
-	
-  </body>
-</html>
+{% endblock %}

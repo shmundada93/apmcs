@@ -1,26 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Transaction Entry</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-            
-<style type="text/css">
-    .container{
-    	margin-top: 20px;
-    }
-	
-	#vertical-divider {
-		border-right: 1px solid black;
-		}
-	
-</style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block body %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap-datepicker3.min.css')}}">
 <script src="{{url_for('static', filename='js/bootstrap-datepicker.min.js')}}"></script>
 <link rel="stylesheet" href="{{url_for('static', filename='css/selectize.bootstrap3.css')}}">
@@ -98,8 +78,8 @@
 					<tbody>
 						<tr>
 							<td>Soyabean</td>
-							<td>25</td>
-							<td>15</td>
+							<td>--</td>
+							<td>--</td>
 						</tr>
 					</tbody>
 				</table>
@@ -116,7 +96,7 @@
 	</div>
 	<div class="row">
         <div class="col-md-6 vertical-divider" >
-			<form class="form-horizontal" method="POST" action="/" autocomplete="off">
+			<form class="form-horizontal" method="POST" action="/u/transaction/{{farmer.id}}" autocomplete="off">
 				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
 				
 
@@ -132,23 +112,18 @@
 				
 
 				<div class="form-group ">
-				<label class="control-label col-md-2" for="crop">Crop</label>
+				<label class="control-label col-md-2" for="commodity">Commodity</label>
 				<div class="col-md-10">
-				<select class="select-crop" id="crop" name="crop" placeholder="Select Crop..." required>
+				<select class="form-control" id="select-commodity" name="commodity" placeholder="Select Commodity..." required>
+				{% for commodity in commodities %}
+				<option value="{{commodity.id}}">{{commodity.name}}</option>
+				{% endfor %}
 				</select>
 				</div>
 				<script>
-					$("#crop").selectize({
-						options: [
-							{crop: 'Wheat'},
-							{crop: 'Rice'},
-							{crop: 'Soyabean'},
-							
-						],
-						labelField: 'crop',
-						valueField: 'crop',
-						searchField: ['crop'],
-						openOnFocus: true
+					$("#select-commodity").selectize({
+						create: false,
+						sortField: 'text'
 					});
 				</script>
 				</div>
@@ -183,18 +158,15 @@
 				<div class="control-group" id="select-trader-group">
 					
 					<select class="form-control" name="trader" id="select-trader" type="text" placeholder="Select Trader...">
+						{% for trader in traders %}
+						<option value="{{trader.id}}">{{trader.name}}</option>
+						{% endfor %}
 					</select>
 				</div>
 				<script>
 					$("#select-trader").selectize({
-						options: [
-							{name: 'Shrirang Mundada'},
-							{name: 'Ashoka Trade and Industries'},
-						],
-						labelField: 'name',
-						valueField: 'name',
-						searchField: ['name'],
-						openOnFocus: true
+						create: false,
+						sortField: 'text'
 					});
 				</script>
 				</div>
@@ -257,5 +229,4 @@
 		</div>
    </div>
 </div>
-</body>
-</html>                                		
+{% endblock %}                             		

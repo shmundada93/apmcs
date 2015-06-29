@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Search</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
-<style type="text/css">
-    .container{
-    	margin-top: 20px;
-    }
-</style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/selectize.bootstrap3.css')}}">
+<script src="{{url_for('static', filename='js/selectize.min.js')}}"></script>
 <div class="container">
 <div class="page-header">
     <h1>
@@ -22,19 +11,22 @@
   </div>
   <div class="row">
     <div class="col-md-4 col-sm-6">
-      <form method="POST" action="/" autocomplete="off">
+      <form method="POST" action="/u/search" autocomplete="off">
         <input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
-        
-		<div class="form-group ">
-		<label class="control-label" for="phone">Phone</label>
-		<input autofocus class="form-control" id="phone" name="phone" pattern="^[0-9]{10}$" type="text" placeholder="10 digit mobile number" value="">
-		</div>
-		
-		<div class="text-muted text-center">-- or --</div>
 		
 		<div class="form-group ">
 		<label class="control-label" for="name">Name</label>
-		<input autofocus class="form-control" id="name" name="name" type="text" value="">
+		<select autofocus class="form-control" id="select-farmer" name="name" type="text" value="">
+		{% for farmer in farmers %}
+			<option value="{{farmer.id}}">{{farmer.name}}</option>
+		{% endfor %}
+		</select>
+		<script>
+			$("#select-farmer").selectize({
+				create: true,
+				sortField: 'text'
+				});
+		</script>
 		</div>
 
         <button type="submit" class="btn btn-primary btn-lg btn-block btn-loading" data-loading-text="<span class='fa fa-spin fa-spinner'></span> Please wait..">
@@ -44,5 +36,6 @@
     </div>
   </div>
   </div>
+{% endblock %}
 </body>
 </html>
