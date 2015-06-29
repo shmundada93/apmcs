@@ -3,7 +3,7 @@ from flask_admin import Admin
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-admin = Admin(app)
+admin = Admin(app , template_mode='bootstrap3')
 
 app.config.from_object('config')
 
