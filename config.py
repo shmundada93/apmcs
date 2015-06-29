@@ -1,4 +1,0 @@
-SQLALCHEMY_DATABASE_URI = "postgres://ysmiogyo:oLMzLG2u9jUjRjj8Uaf79GOVqSmSRg_h@jumbo.db.elephantsql.com:5432/ysmiogyo"
-PLIVO_AUTH_ID = "MAN2JLNGRHNMFLYWYYZT"
-PLIVO_AUTH_TOKEN = "YmMzNDM2YTJlYzM4MWE2ZmI1OGFhNWJjYTIzOWNj"
-SECRET_KEY = "creativegffhjjgkgf"
