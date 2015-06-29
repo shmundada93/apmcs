@@ -58,7 +58,7 @@ class Transaction(db.Model):
         self.total = total
 
     def __repr__(self):
-        return '%d %s\n%s Rs.%d'%(self.id,self.date, self.crop,self.total)
+        return '%d %s\n%s Rs.%d'%(self.id,self.date, self.commodity,self.total)
 
 class Commodity(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)

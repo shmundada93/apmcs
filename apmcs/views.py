@@ -5,13 +5,16 @@ import plivo
 from config import PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN
 import datetime
 
-text = "Welcome to NN APMC. You will get pricing and your crop related information via SMS."
+text = "Welcome to NN APMC. You are subscribed to pricing and your crop related information via SMS."
 sender_id = "NNAPMC"
 month_map = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,\
              'July':7,'August':8,'September':9,'October':10,'November':11,\
              'December':12}
 
 @app.route('/')
+def index():
+    return render_template('home.html')
+
 @app.route('/u/search', methods = ['GET','POST'])
 def farmer_search():
     if request.method == 'POST':
