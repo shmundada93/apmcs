@@ -1,7 +1,7 @@
 # apmcs
 Cloud based solution for APMCs (Farmer's Market)
 
-**[View Live Demo](http://apmc.mybluemix.net)**
+**[View Live Demo](http://apmcs.mybluemix.net)**
 
 This is a cloud based platform for APMCs (Market places where farmers bring their produce for auction).
 
