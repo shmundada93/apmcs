@@ -4,6 +4,7 @@ from .models import Farmer, Trader, Transaction, Commodity
 import plivo
 from config import PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN
 import datetime
+import thread
 
 text = "Welcome to NN APMC. You are subscribed to pricing and your crop related information via SMS."
 sender_id = "NNAPMC"
@@ -11,9 +12,24 @@ month_map = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,\
              'July':7,'August':8,'September':9,'October':10,'November':11,\
              'December':12}
 
+def send_sms(sender_id, text, phone):
+    message_params = {
+          'src':sender_id,
+          'dst': "91"+ phone,
+          'text':text,
+        }
+    p = plivo.RestAPI(PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN)
+    print p.send_message(message_params)
+    return None
+    
+
 @app.route('/')
 def index():
     return render_template('home.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/u/search', methods = ['GET','POST'])
 def farmer_search():
@@ -36,15 +52,10 @@ def farmer_registration(name=""):
         farmer = Farmer(name=name, village=village, area=area, phone=phone)
         db.session.add(farmer)
         db.session.commit()
-
-        message_params = {
-          'src':sender_id,
-          'dst': "91"+ phone,
-          'text':text,
-        }
-        p = plivo.RestAPI(PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN)
-        print p.send_message(message_params)
-        
+        try:
+            thread.start_new_thread(send_sms,(sender_id, text, phone,)) 
+        except:
+            pass    
         return redirect('/u/transaction/%d'%farmer.id)
 
     return render_template('registration.html', name = name)
