@@ -1,29 +1,18 @@
 from apmcs import db
 from apmcs import app
+from sqlalchemy import select, func
+from sqlalchemy.sql import case
+from sqlalchemy.orm import column_property
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.sql.expression import join
 
-class Farmer(db.Model):
-    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    name = db.Column(db.String(120))
-    village = db.Column(db.String(80))
-    area = db.Column(db.Integer)
-    phone = db.Column(db.String(10))
-    transactions = db.relationship('Transaction', backref='farmer', lazy='dynamic')
 
-    def __init__(self, name="", village="", area=None, phone=""):
-        self.name = name
-        self.village = village
-        self.area = int(area)
-        self.phone = phone
-
-    def __repr__(self):
-        return '%d %s\n%s'%(self.id,self.name,self.phone)
 
 class Trader(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(120))
     village = db.Column(db.String(80))
     phone = db.Column(db.String(10))
-    transactions = db.relationship('Transaction', backref='trader', lazy='dynamic')
     
     def __init__(self, name="", village="", phone=""):
         self.name = name
@@ -37,8 +26,11 @@ class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     date = db.Column(db.DateTime)
     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    commodity = db.relationship('Commodity', backref='transactions')
     trader_id = db.Column(db.Integer, db.ForeignKey('trader.id'))
+    trader = db.relationship('Trader', backref='transactions')
     farmer_id = db.Column(db.Integer, db.ForeignKey('farmer.id'))
+    farmer = db.relationship('Farmer', backref='transactions')
     weight = db.Column(db.Numeric)
     price = db.Column(db.Numeric)
     commission = db.Column(db.Numeric)
@@ -65,7 +57,6 @@ class Commodity(db.Model):
     name = db.Column(db.String(120))
     comm_percent = db.Column(db.Numeric)
     labour_perQtl = db.Column(db.Numeric)
-    transactions = db.relationship('Transaction', backref='commodity', lazy='dynamic')
 
     def __init__(self, name ="", comm_percent=0, labour_perQtl=0):
         self.name = name
@@ -74,3 +65,32 @@ class Commodity(db.Model):
     
     def __repr__(self):
         return '%s'%self.name
+
+class Farmer(db.Model):
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    name = db.Column(db.String(120))
+    birth_date = db.Column(db.DateTime)
+    village = db.Column(db.String(80))
+    area = db.Column(db.Integer)
+    phone = db.Column(db.String(10))
+
+    @hybrid_property
+    def amount(self):
+        if self.transactions:
+            return sum([transaction.total for transaction in self.transactions])
+        else:
+            return 0
+            
+    @amount.expression
+    def amount(cls):
+        return select([func.sum(Transaction.total)]).\
+               where(Transaction.farmer_id == cls.id).label("amount")
+        
+    def __init__(self, name="", village="", area=None, phone=""):
+        self.name = name
+        self.village = village
+        self.area = int(area)
+        self.phone = phone
+
+    def __repr__(self):
+        return '%d %s\n%s'%(self.id,self.name,self.phone)

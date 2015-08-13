@@ -1,28 +1,40 @@
+# -*- coding: utf-8 -*-
+
 from apmcs import app, db
 from flask import Flask, render_template, url_for, request, redirect, session, g
 from .models import Farmer, Trader, Transaction, Commodity
-import plivo
-from config import PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN
+from config import SENTLY_AUTH
 import datetime
 import thread
+from urllib2 import Request, urlopen
+from urllib import urlencode
+import json
 
-text = "Welcome to NN APMC. You are subscribed to pricing and your crop related information via SMS."
-sender_id = "NNAPMC"
+#text = "Welcome to NN APMC. You are subscribed to pricing and your crop related information via SMS."
+text = u'ना. ना. मुंदडा कृषि उत्पन्न बॅज़ार'
+sender_id = "NNMAPM"
 month_map = {'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,\
              'July':7,'August':8,'September':9,'October':10,'November':11,\
              'December':12}
-
+    
 def send_sms(sender_id, text, phone):
-    message_params = {
-          'src':sender_id,
-          'dst': "91"+ phone,
-          'text':text,
-        }
-    p = plivo.RestAPI(PLIVO_AUTH_ID, PLIVO_AUTH_TOKEN)
-    print p.send_message(message_params)
+    values = {
+        "from":sender_id,
+        "to":"+91" + phone,
+        "text":text}
+
+    headers = {
+    'Content-Type':'application/json',
+    'Accept':'application/json',
+    'Authorization':'Bearer adkk2y5yai7m5u039aketayl0kokdvhk',
+    'Accept-Encoding':'gzip'}
+
+    request = Request('https://apiserver.sent.ly/api/outboundmessage'\
+                      ,data=json.dumps(values),headers=headers)
+    response_body = urlopen(request).read()
+    print response_body
     return None
     
-
 @app.route('/')
 def index():
     return render_template('home.html')
