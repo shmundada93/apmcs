@@ -1,0 +1,76 @@
+{% extends 'admin/master.html' %}
+{% block body%}
+<script>
+var s = document.createElement('script'); s.setAttribute('src','http://developer.quillpad.in/static/js/quill.js?lang=Marathi&key=c012180c5288dfc722c9d8409f2c28cc'); s.setAttribute('id','qpd_script'); document.head.appendChild(s);
+</script>
+
+<style>.bootstrap-iso form button, .bootstrap-iso form input, .bootstrap-iso form textarea, .bootstrap-iso form select{-webkit-border-radius: 0 !important;-moz-border-radius: 0 !important; border-radius: 0 !important;}.bootstrap-iso h2, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;}</style>
+ 
+<!-- HTML Form (wrapped in an isolated Bootstrap 3 div) -->
+<div class="bootstrap-iso">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6 col-sm-6 col-xs-12">
+    <div>
+     <h2>
+      Message Form
+     </h2>
+     <p>
+     </p>
+    </div>
+    <form method="POST">
+     <div class="form-group">
+      <label class="control-label requiredField" for="sms">
+       SMS
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <textarea class="form-control" cols="40" id="sms" name="sms" placeholder="Write SMS here" rows="10" required></textarea>
+     </div>
+     <div class="form-group">
+      <label class="control-label requiredField">
+       Check all that apply
+       <span class="asteriskField">
+        *
+       </span>
+	   <span class="help-block" id="hint_memberGroup">
+        Select Group Level Here
+       </span>
+      </label>
+      <div class="">
+       <div class="checkbox">
+        <label class="checkbox">
+         <input name="group" type="checkbox" value="silver"/>
+         Silver (&lt; 2 lakh) -- {{groupNo["silver"]}} members 
+        </label>
+       </div>
+       <div class="checkbox">
+        <label class="checkbox">
+         <input name="group" type="checkbox" value="gold"/>
+         Gold (2-5 lakhs) -- {{groupNo["gold"]}} members
+        </label>
+       </div>
+       <div class="checkbox">
+        <label class="checkbox">
+         <input name="group" type="checkbox" value="platinum"/>
+         Platinum (&gt;5 lakhs) -- {{groupNo["platinum"]}} members
+        </label>
+       </div>
+      </div>
+     </div>
+     <div class="form-group">
+      <div>
+       <input name="_honey" style="display:none" type="text"/>
+       <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
+        Send SMS
+       </button>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+</div>
+
+{%endblock%}

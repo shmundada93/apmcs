@@ -16,7 +16,8 @@
 		
 		<div class="form-group ">
 		<label class="control-label" for="name">Name</label>
-		<select autofocus class="form-control" id="select-farmer" name="name" type="text" value="">
+		<select autofocus class="form-control" id="select-farmer" name="name" placeholder="Enter Farmer Name..." type="text" required>
+		<option value="">"Enter Farmer Name..."</option>
 		{% for farmer in farmers %}
 			<option value="{{farmer.id}}">{{farmer.name}}</option>
 		{% endfor %}
@@ -24,7 +25,7 @@
 		<script>
 			$("#select-farmer").selectize({
 				create: true,
-				sortField: 'text'
+				sortField:'text',
 				});
 		</script>
 		</div>
