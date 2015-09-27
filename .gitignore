@@ -1,4 +1,5 @@
 instance
 *.pyc
 config.*
-psycopg2
+.idea
+bluemix.txt

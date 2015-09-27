@@ -19,7 +19,7 @@
 		<select autofocus class="form-control" id="select-farmer" name="name" placeholder="Enter Farmer Name..." type="text" required>
 		<option value="">"Enter Farmer Name..."</option>
 		{% for farmer in farmers %}
-			<option value="{{farmer.id}}">{{farmer.name}}</option>
+			<option value="{{farmer.id}}"><b>{{farmer.name}}</b> | {{farmer.village}} | {{farmer.phone}}</option>
 		{% endfor %}
 		</select>
 		<script>

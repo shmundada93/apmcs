@@ -13,8 +13,14 @@
                     format: "dd MM yyyy",
 					autoclose: true,
 					todayHighlight: true
-                });  
+                });
 				$('#date-picker').datepicker('update', new Date());
+				
+				$('#birth-date').datepicker({
+                    format: "dd MM",
+					autoclose: true,
+                });
+				$('#birth-date').datepicker('update', new Date({{farmer.birth_date.year}},{{farmer.birth_date.month-1}},{{farmer.birth_date.day}}));
 				});
 </script>
 
@@ -26,7 +32,7 @@
  </div>
   <div class="row">
         <div class="col-md-6">
-			<form class="form-horizontal" method="POST" action="/" autocomplete="off">
+			<form class="form-horizontal" method="POST" action="/u/farmer/{{farmer.id}}" autocomplete="off">
 				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
 				
 				
@@ -38,20 +44,29 @@
 
 				<div class="form-group ">
 				<label class="control-label col-md-2" for="phone">Phone</label>
-				<div class="col-md-10"><input class="form-control" id="phone" name="phone" pattern="^[0-9]{10}$" type="text" placeholder="10 digit mobile number" value="{{farmer.phone}}" required disabled></div>
+				<div class="col-md-10"><input class="form-control" id="phone" name="phone" pattern="^[0-9]{10}$" type="text" placeholder="10 digit mobile number" value="{{farmer.phone}}" required></div>
 				</div>
 
-
+				<div class="form-group ">
+				<label class="control-label col-md-2" for="date">BirthDate</label>
+				<div class="col-md-10">
+				<div class="input-group date" id="birth-date">
+				<input class="form-control" name="birthdate" type="text" value="" required>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				</div>
+				</div>
+				</div>
+				
 				<div class="form-group ">
 				<label class="control-label col-md-2" for="village">Village</label>
-				<div class="col-md-10"><input class="form-control" id="village" name="village" type="text" value="{{farmer.village}}" required disabled></div>
+				<div class="col-md-10"><input class="form-control" id="village" name="village" type="text" value="{{farmer.village}}" required></div>
 				</div>
 				
 				
 				<div class="form-group ">
 				<label class="control-label col-md-2" for="area">Area</label>
 				<div class="col-md-10"><div class="input-group">
-				<input class="form-control" id="area" name="area" type="text" value="{{farmer.area}}" required disabled>
+				<input class="form-control" id="area" name="area" type="text" value="{{farmer.area}}" required>
 				<span class="input-group-addon">Acres</span>
 				</div>
 				</div>

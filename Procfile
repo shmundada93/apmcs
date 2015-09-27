@@ -1,1 +1,1 @@
-web: python run.py
+web: newrelic-admin run-program gunicorn -w 3 run:app
