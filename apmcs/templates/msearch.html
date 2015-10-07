@@ -2,8 +2,8 @@
 {% block title %}Search{% endblock %}
 {% block nav %}
 <ul class="nav navbar-nav">
-            <li class="active"><a href="/u/search">Transactions</a></li>
-			<li><a href="/mandi/search">eMandi</a></li>
+            <li><a href="/u/search">Transactions</a></li>
+			<li class="active"><a href="/mandi/search">eMandi</a></li>
             <li><a href="/admin">Admin</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
@@ -19,7 +19,7 @@
   </div>
   <div class="row">
     <div class="col-md-4 col-sm-6">
-      <form method="POST" action="/u/search" autocomplete="off">
+      <form method="POST" action="/mandi/search" autocomplete="off">
         <input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
 		
 		<div class="form-group ">

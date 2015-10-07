@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Transaction{% endblock %}
+{% block title %}Auction Posting{% endblock %}
 {% block nav %}
 <ul class="nav navbar-nav">
-            <li class="active"><a href="/u/search">Transactions</a></li>
-			<li><a href="/mandi/search">eMandi</a></li>
+            <li><a href="/u/search">Transactions</a></li>
+			<li class="active"><a href="/mandi/search">eMandi</a></li>
             <li><a href="/admin">Admin</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
@@ -40,7 +40,7 @@
  </div>
   <div class="row">
         <div class="col-md-6">
-			<form class="form-horizontal" method="POST" action="/u/farmer/{{farmer.id}}" autocomplete="off">
+			<form class="form-horizontal" method="POST" action="/mandi/farmer/{{farmer.id}}" autocomplete="off">
 				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
 				
 				
@@ -114,12 +114,12 @@
 <div class="container">
 	<div class="page-header">
 		<h2>
-		Transaction
+		Auction Posting 
 		</h2>
 	</div>
 	<div class="row">
         <div class="col-md-6 vertical-divider" >
-			<form class="form-horizontal" method="POST" action="/u/transaction/{{farmer.id}}" autocomplete="off">
+			<form class="form-horizontal" method="POST" action="/mandi/post/{{farmer.id}}" autocomplete="off">
 				<input id="csrf_token" name="csrf_token" type="hidden" value="1434974115##cfdd05a314e5f0fdd6618eb504b4ce2b637a7ff7">
 				
 
@@ -127,7 +127,7 @@
 				<label class="control-label col-md-2" for="date">Date</label>
 				<div class="col-md-10">
 				<div class="input-group date" id="date-picker">
-				<input autofocus class="form-control" name="date" type="text" value="" required>
+				<input class="form-control" name="date" type="text" value="" disabled>
 				<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 				</div>
 				</div>
@@ -137,7 +137,7 @@
 				<div class="form-group ">
 				<label class="control-label col-md-2" for="commodity">Commodity</label>
 				<div class="col-md-10">
-				<select class="form-control" id="select-commodity" name="commodity" placeholder="Select Commodity..." required>
+				<select autofocus class="form-control" id="select-commodity" name="commodity" placeholder="Select Commodity..." required>
 				<option value="">"Enter Commodity..."</option>
 				{% for commodity in commodities %}
 				<option value="{{commodity.id}}">{{commodity.name}}</option>
@@ -165,48 +165,26 @@
 				</div>
 				
 				
-				<div class="form-group ">
+<!-- 				<div class="form-group ">
 				<label class="control-label col-md-2" for="price">Price</label>
 				<div class="col-md-10"><div class="input-group">
 				<input class="form-control" id="price" name="price" type="text" value="" oninput="calculate()" required>
 				<span class="input-group-addon">Rs.</span>
 				</div>
 				</div>
-				</div>
+				</div> -->
 				
-				
-				<div class="form-group ">
-				<label class="control-label col-md-2" for="select-trader">Trader</label>
-				<div class="col-md-10">
-				<div>
-				<div class="control-group" id="select-trader-group">
-					
-					<select class="form-control" name="trader" id="select-trader" type="text" placeholder="Select Trader...">
-						{% for trader in traders %}
-						<option value="{{trader.id}}">{{trader.name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<script>
-					$("#select-trader").selectize({
-						create: false,
-						sortField: 'text'
-					});
-				</script>
-				</div>
-				</div>
-				</div>
 				
 				
 				<div class="col-md-2"></div>
 				<div class="col-md-10">
 					<button type="submit" class="btn btn-lg btn-primary btn-block btn-loading"     data-loading-text="<span class='fa fa-spin fa-spinner'></span> Please wait..">		
-					Generate Receipt
+					Post for Auction
 					</button>
 				</div>
 			</form>
 		</div>
-		<script>
+<!-- 		<script>
 		function calculate() {
 		var weight = document.getElementById('weight').value;	
 		var price = document.getElementById('price').value;
@@ -250,7 +228,7 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</div> -->
    </div>
 </div>
 {% endblock %}                             		

@@ -79,11 +79,16 @@ class Commodity(db.Model):
     name = db.Column(db.String(120))
     comm_percent = db.Column(db.Numeric)
     labour_perQtl = db.Column(db.Numeric)
+    base_price = db.Column(db.Numeric)
+    imageurl = db.Column(db.String)
 
-    def __init__(self, name="", comm_percent=0, labour_perQtl=0):
+    def __init__(self, name="", comm_percent=0, labour_perQtl=0, base_price=0,\
+                 imageurl=""):
         self.name = name
         self.comm_percent = comm_percent
         self.labour_perQtl = labour_perQtl
+        self.base_price = base_price
+        self.imageurl = imageurl
 
     def __repr__(self):
         return '%s' % self.name
