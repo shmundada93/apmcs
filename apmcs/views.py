@@ -41,7 +41,6 @@ def saveInParse(weight, commodity_id , farmer_id):
     item.previousWinners = []
     item.opentime = opentime
     item.closetime = closetime
-    item.type = "Boring"
     item.save()
     return True
 
@@ -154,7 +153,7 @@ def post_item(farmer_id=None):
         weight = round(float(request.form['weight']), 2)
         commodity_id = request.form['commodity']
         saveInParse(weight, commodity_id, farmer_id)
-        return "Done..."
+        return redirect('/admin/dailyauction')
     
     farmer = Farmer.query.get(farmer_id)
     traders = Trader.query.all()

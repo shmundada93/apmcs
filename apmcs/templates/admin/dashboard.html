@@ -1,0 +1,39 @@
+{% extends 'admin/master.html' %}
+{% block head_tail %}
+  {{ super() }}
+  <link href="{{ url_for('static', filename='css/sortable-theme-bootstrap.css') }}" rel="stylesheet">
+  <script src="{{url_for('static', filename='js/sortable.min.js')}}"></script>
+{% endblock %}
+{% block body %}
+{{ super() }}
+<br>
+<h2> Todays Market Summary: </h2><br>
+<br>
+<br>
+  <table class="sortable-theme-bootstrap" data-sortable="">
+    <thead>
+      <tr>
+        <th>Commodity</th>
+        <th>Weight (Qtls.)</th>
+        <th>High (Rs.)</th>
+		<th>Low (Rs.)</th>
+		<th>Avg (Rs.)</th>
+		<th>No. of Trans</th>
+		<th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+	{% for item in summary %}
+      <tr>
+        <td>{{item.name}}</td>
+        <td>{{item.weight}}</td>
+        <td>{{item.high}}</td>
+        <td>{{item.low}}</td>
+		<td>{{item.avg}}</td>
+		<td>{{item.ntrans}}</td>
+		<td>{{item.total}}</td>
+      </tr>
+	 {%endfor%}
+    </tbody>
+  </table>
+  {% endblock body %}

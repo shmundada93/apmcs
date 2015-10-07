@@ -1,8 +1,6 @@
 {% extends 'admin/master.html' %}
 {% block body%}
-<script>
-var s = document.createElement('script'); s.setAttribute('src','http://developer.quillpad.in/static/js/quill.js?lang=Marathi&key=c012180c5288dfc722c9d8409f2c28cc'); s.setAttribute('id','qpd_script'); document.head.appendChild(s);
-</script>
+
 
 <style>.bootstrap-iso form button, .bootstrap-iso form input, .bootstrap-iso form textarea, .bootstrap-iso form select{-webkit-border-radius: 0 !important;-moz-border-radius: 0 !important; border-radius: 0 !important;}.bootstrap-iso h2, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;}</style>
  
@@ -72,5 +70,7 @@ var s = document.createElement('script'); s.setAttribute('src','http://developer
   </div>
  </div>
 </div>
-
+<script>
+var s = document.createElement('script'); s.setAttribute('src','http://developer.quillpad.in/static/js/quill.js?lang=Marathi&key=c012180c5288dfc722c9d8409f2c28cc'); s.setAttribute('id','qpd_script'); document.head.appendChild(s);
+</script>
 {%endblock%}

@@ -1,0 +1,55 @@
+{% extends 'admin/master.html' %}
+{% block head_tail %}
+  {{ super() }}
+  <link href="{{ url_for('static', filename='css/sortable-theme-bootstrap.css') }}" rel="stylesheet">
+  <script src="{{url_for('static', filename='js/sortable.min.js')}}"></script>
+{% endblock %}
+{% block body %}
+{{ super() }}
+  <table class="sortable-theme-bootstrap" data-sortable="">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Commodity</th>
+        <th>Farmer</th>
+        <th>Quantity</th>
+		<th>No. Bids</th>
+		<th>Trader</th>
+		<th>Latest Bid</th>
+		<th>Total Value</th>
+		<th>Time Left</th>
+      </tr>
+    </thead>
+    <tbody>
+	{% for item in items %}
+      <tr>
+        <td>{{item.opentime}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.donorname}}</td>
+        <td>{{item.weight}}</td>
+		<td>{{item.numberOfBids}}</td>
+		{% if item.currentWinners %}
+			<td>{{item.currentWinners[0]}}</td>
+		{% else %}
+			<td>----</td>
+		{% endif %}
+		{% if item.currentPrice %}
+			<td>{{item.currentPrice[0]}}</td>
+		{% else %}
+			<td>{{item.price}}</td>
+		{% endif %}
+		{% if item.currentPrice %}
+			<td>{{item.currentPrice[0]*item.weight}}</td>
+		{% else %}
+			<td>-----</td>
+		{% endif %}
+		{% if (item.closetime - timenow) > timecmp  %}
+			<td>{{item.closetime - timenow - timecmp}}</td>
+		{% else %}
+			<td>Closed</td>
+		{% endif %}
+      </tr>
+	 {%endfor%}
+    </tbody>
+  </table>
+  {% endblock body %}

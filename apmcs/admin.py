@@ -7,6 +7,12 @@ from sqlalchemy.sql.expression import func
 from apmcs import admin, db, app
 from apmcs.models import Farmer, Trader, Transaction, Commodity, Message, Email
 from util import send_sms
+from parse_rest.datatypes import Object
+import datetime
+
+#eMandi
+class Item(Object):
+    pass
 
 Groups = {"silver": [0, 200000], "gold": [200001, 500000], "platinum": [500001, 1000000000]}
 
@@ -43,6 +49,49 @@ class NewSMS(BaseView):
         groupNo, phoneNos = groupFarmers(farmers)
         return self.render('admin/message.html', groupNo=groupNo)
 
+class Dashboard(BaseView):
+    @expose('/')
+    def index(self):
+        transactions = Transaction.query.filter(\
+            func.date(Transaction.date) == datetime.datetime.today().date()).all()
+        print "................................................................."
+        summary = []
+        commodities = Commodity.query.all()
+        for commodity in commodities:
+            val = [(t.weight, t.price, t.weight * t.price) for t in transactions if \
+                   t.commodity_id == commodity.id]
+            if val:
+                weights, prices, totals = zip(*val)
+            else:
+                weights, prices, totals = [[0],[0],[0]]
+            temp = {"name":commodity.name}
+            temp["weight"] = sum(weights)
+            temp["high"] = max(prices)
+            temp["low"] = min(prices)
+            if sum(weights)>0:
+                temp["avg"] = round(sum(totals)/sum(weights),2)
+                temp["ntrans"] = len(weights)
+            else:
+                temp["avg"] = 0
+                temp["ntrans"] = 0
+            temp["total"] = sum(totals)
+            summary.append(temp)
+        return self.render('admin/dashboard.html', summary = summary)
+    
+
+class DailyAuction(BaseView):
+    @expose('/')
+    def index(self):
+        items = Item.Query.all().order_by("-opentime")
+        return self.render('admin/dailyauction.html', items = items, timecmp = \
+                           datetime.timedelta(hours =-5, minutes=-30), timenow = datetime.datetime.now())
+
+class AllAuction(BaseView):
+    @expose('/')
+    def index(self):
+        items = Item.Query.all().order_by("-opentime")
+        return self.render('admin/auction.html', items = items, timecmp = \
+                           datetime.timedelta(hours =-5, minutes=-30), timenow = datetime.datetime.now())
 
 class EmailAdmin(ModelView):
     column_list = ['id', 'name', 'email']
@@ -62,6 +111,11 @@ class TransactionLogger(BaseView):
     @expose('/')
     def index(self):
         return redirect('/u/search')
+
+class Mandi(BaseView):
+    @expose('/')
+    def index(self):
+        return redirect('/mandi/search')
 
 
 class ContactPage(BaseView):
@@ -96,8 +150,8 @@ class FarmerAdmin(ModelView):
     # FloatSmallerFilter(Farmer.amount,'Amount')]
     inline_models = (Transaction,)
 
-    def __init__(self, session):
-        super(FarmerAdmin, self).__init__(Farmer, session)
+    def __init__(self, session, name, category):
+        super(FarmerAdmin, self).__init__(Farmer, session, name, category)
 
 
 class TransactionAdmin(ModelView):
@@ -111,17 +165,20 @@ class TransactionAdmin(ModelView):
     column_filters = (
     'date', 'commodity.name', 'trader.name', 'farmer.name', 'farmer.village', 'weight', 'price', 'total')
 
-    def __init__(self, session):
-        super(TransactionAdmin, self).__init__(Transaction, session)
+    def __init__(self, session, name, category):
+        super(TransactionAdmin, self).__init__(Transaction, session, name, category)
 
-
+admin.add_view(Dashboard(name="Dashboard"))
 admin.add_view(NewSMS(name='New SMS', category="Messages"))
 admin.add_view(MessageAdmin(db.session, name="All SMS", category="Messages"))
-admin.add_view(FarmerAdmin(db.session))
-admin.add_view(TransactionAdmin(db.session))
-admin.add_view(ModelView(Trader, db.session))
-admin.add_view(ModelView(Commodity, db.session))
+admin.add_view(DailyAuction(name='Daily Auctions', category="eMandi"))
+admin.add_view(AllAuction(name="All Auctions", category="eMandi"))
+admin.add_view(FarmerAdmin(db.session, name="Farmers", category="Manage"))
+admin.add_view(TransactionAdmin(db.session, name="Transactions", category="Manage"))
+admin.add_view(ModelView(Trader, db.session, name="Traders", category="Manage"))
+admin.add_view(ModelView(Commodity, db.session, name="Commodities", category="Manage"))
 admin.add_view(EmailAdmin(db.session, name="Email", category="Settings"))
 admin.add_view(FrontPage(name='Home page', category='Other Pages'))
-admin.add_view(TransactionLogger(name='Transaction Logger', category='Other Pages'))
+admin.add_view(TransactionLogger(name='Transactions', category='Other Pages'))
+admin.add_view(Mandi(name='eMandi', category='Other Pages'))
 admin.add_view(ContactPage(name='Contact Us', category='Other Pages'))
